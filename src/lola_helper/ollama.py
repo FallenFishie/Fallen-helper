@@ -17,7 +17,7 @@ class OllamaClient:
         self._client = httpx.AsyncClient(
             base_url=self.base_url,
             timeout=httpx.Timeout(connect=4.0, read=300.0, write=30.0, pool=5.0),
-            headers={"User-Agent": "Fallen-Helper/0.1"},
+            headers={"User-Agent": "Lola-Helper/0.1"},
         )
 
     async def close(self) -> None:

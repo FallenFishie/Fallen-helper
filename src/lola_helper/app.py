@@ -1,4 +1,4 @@
-"""FastAPI application serving Fallen's local control panel."""
+"""FastAPI application serving Lola's local control panel."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from . import __version__
-from .agent import AgentStateError, FallenAgent
+from .agent import AgentStateError, LolaAgent
 from .config import Settings
 from .ollama import OllamaClient, OllamaError
 from .tools import ComputerTools, ToolError
@@ -41,7 +41,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     settings.ensure_data_dirs()
     ollama = OllamaClient(settings.ollama_url)
     tools = ComputerTools(settings)
-    agent = FallenAgent(settings, ollama, tools)
+    agent = LolaAgent(settings, ollama, tools)
     static_dir = Path(__file__).parent / "static"
 
     @asynccontextmanager
@@ -50,7 +50,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         await ollama.close()
 
     app = FastAPI(
-        title="Fallen Helper",
+        title="Lola Helper",
         version=__version__,
         docs_url=None,
         redoc_url=None,
@@ -76,7 +76,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if (
             request.url.path.startswith("/api/")
             and request.method in {"POST", "PUT", "DELETE"}
-            and request.headers.get("X-Fallen-Client") != "control-panel"
+            and request.headers.get("X-Lola-Client") != "control-panel"
         ):
             return JSONResponse({"detail": "Missing local client header"}, status_code=403)
         response = await call_next(request)

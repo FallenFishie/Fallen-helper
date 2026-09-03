@@ -38,15 +38,15 @@ const makeId = () => {
 };
 
 const state = {
-  sessionId: sessionStorage.getItem("fallen-session") || makeId(),
+  sessionId: sessionStorage.getItem("lola-session") || makeId(),
   busy: false,
   pendingApproval: null,
-  speechEnabled: localStorage.getItem("fallen-speech") === "true",
+  speechEnabled: localStorage.getItem("lola-speech") === "true",
   recognition: null,
   listening: false,
   hasMessages: false,
 };
-sessionStorage.setItem("fallen-session", state.sessionId);
+sessionStorage.setItem("lola-session", state.sessionId);
 
 function friendlyTime() {
   return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(
@@ -64,13 +64,13 @@ async function api(path, options = {}) {
   const headers = new Headers(options.headers || {});
   if (options.body) headers.set("Content-Type", "application/json");
   if ((options.method || "GET") !== "GET") {
-    headers.set("X-Fallen-Client", "control-panel");
+    headers.set("X-Lola-Client", "control-panel");
   }
   let response;
   try {
     response = await fetch(path, { ...options, headers });
   } catch (_error) {
-    throw new Error("The Fallen service is unreachable. Is it still running?");
+    throw new Error("The Lola service is unreachable. Is it still running?");
   }
   if (response.status === 204) return null;
   let payload;
@@ -117,7 +117,7 @@ function appendMessage(role, text, actions = [], isError = false) {
   const meta = document.createElement("div");
   meta.className = "message-meta";
   const name = document.createElement("span");
-  name.textContent = role === "user" ? "You" : isError ? "System notice" : "Fallen";
+  name.textContent = role === "user" ? "You" : isError ? "System notice" : "Lola";
   const time = document.createElement("time");
   time.textContent = friendlyTime();
   meta.append(name, time);
@@ -279,7 +279,7 @@ async function loadHealth() {
 }
 
 function updateModels(models, defaultModel) {
-  const saved = localStorage.getItem("fallen-model");
+  const saved = localStorage.getItem("lola-model");
   const current = elements.model.value;
   const preferred = saved || (current && !current.includes("Loading") ? current : defaultModel);
   const names = [...new Set(models.filter(Boolean))];
@@ -307,7 +307,7 @@ async function loadTasks() {
     if (!tasks.length) {
       const empty = document.createElement("p");
       empty.className = "empty-small";
-      empty.textContent = "Ask Fallen to remember something.";
+      empty.textContent = "Ask Lola to remember something.";
       elements.taskList.append(empty);
       return;
     }
@@ -361,7 +361,7 @@ async function clearThread() {
     return;
   }
   state.sessionId = makeId();
-  sessionStorage.setItem("fallen-session", state.sessionId);
+  sessionStorage.setItem("lola-session", state.sessionId);
   state.pendingApproval = null;
   state.hasMessages = false;
   elements.messages.replaceChildren();
@@ -417,9 +417,9 @@ function setupRecognition() {
     state.listening = true;
     elements.mic.classList.add("listening");
     elements.input.placeholder = "Listening…";
-    if (!localStorage.getItem("fallen-voice-notice")) {
+    if (!localStorage.getItem("lola-voice-notice")) {
       toast("Voice recognition is provided by your browser and may use its online speech service.");
-      localStorage.setItem("fallen-voice-notice", "shown");
+      localStorage.setItem("lola-voice-notice", "shown");
     }
   });
   recognition.addEventListener("result", (event) => {
@@ -440,7 +440,7 @@ function setupRecognition() {
   recognition.addEventListener("end", () => {
     state.listening = false;
     elements.mic.classList.remove("listening");
-    elements.input.placeholder = "Ask Fallen to think or act…";
+    elements.input.placeholder = "Ask Lola to think or act…";
     const spoken = finalTranscript.trim();
     if (spoken && !state.busy) sendMessage(spoken);
   });
@@ -471,14 +471,14 @@ elements.input.addEventListener("keydown", (event) => {
   }
 });
 elements.model.addEventListener("change", () => {
-  localStorage.setItem("fallen-model", elements.model.value);
+  localStorage.setItem("lola-model", elements.model.value);
   toast(`Reasoning engine set to ${elements.model.value}.`);
 });
 elements.newThread.addEventListener("click", clearThread);
 elements.clearThread.addEventListener("click", clearThread);
 elements.voiceToggle.addEventListener("click", () => {
   state.speechEnabled = !state.speechEnabled;
-  localStorage.setItem("fallen-speech", String(state.speechEnabled));
+  localStorage.setItem("lola-speech", String(state.speechEnabled));
   if (!state.speechEnabled) globalThis.speechSynthesis?.cancel();
   updateVoiceToggle();
 });

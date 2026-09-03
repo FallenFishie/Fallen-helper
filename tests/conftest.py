@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from fallen_helper.config import Settings
+from lola_helper.config import Settings
 
 
 @pytest.fixture

@@ -25,10 +25,10 @@ if (-not (Test-Path ".venv\Scripts\python.exe")) {
 & ".venv\Scripts\python.exe" -m pip install --upgrade pip
 & ".venv\Scripts\python.exe" -m pip install -e .
 
-Write-Host "`nFallen Helper is installed." -ForegroundColor Cyan
+Write-Host "`nLola Helper is installed." -ForegroundColor Cyan
 if (-not (Get-Command ollama -ErrorAction SilentlyContinue)) {
     Write-Host "Ollama was not found. Install it from https://ollama.com/download" -ForegroundColor Yellow
 } else {
     Write-Host "Ollama detected. If needed, run: ollama pull qwen3:4b"
 }
-Write-Host "Start Fallen with: .\scripts\start.ps1"
+Write-Host "Start Lola with: .\scripts\start.ps1"

@@ -3,9 +3,9 @@ from typing import Any
 
 import pytest
 
-from fallen_helper.agent import AgentStateError, FallenAgent
-from fallen_helper.config import Settings
-from fallen_helper.tools import ComputerTools
+from lola_helper.agent import AgentStateError, LolaAgent
+from lola_helper.config import Settings
+from lola_helper.tools import ComputerTools
 
 
 class FakeOllama:
@@ -31,7 +31,7 @@ async def test_safe_tool_runs_and_returns_final_answer(settings: Settings) -> No
         ]
     )
     tools = ComputerTools(settings)
-    agent = FallenAgent(settings, ollama, tools)  # type: ignore[arg-type]
+    agent = LolaAgent(settings, ollama, tools)  # type: ignore[arg-type]
 
     result = await agent.chat("session-1", "What system is this?")
 
@@ -62,7 +62,7 @@ async def test_file_write_waits_for_explicit_approval(settings: Settings) -> Non
             {"role": "assistant", "content": "The file is ready."},
         ]
     )
-    agent = FallenAgent(settings, ollama, ComputerTools(settings))  # type: ignore[arg-type]
+    agent = LolaAgent(settings, ollama, ComputerTools(settings))  # type: ignore[arg-type]
 
     pending = await agent.chat("session-2", "Write a file")
     assert pending["type"] == "approval_required"
@@ -93,7 +93,7 @@ async def test_denied_action_is_reported_to_model(settings: Settings) -> None:
             {"role": "assistant", "content": "No problem; I did not write it."},
         ]
     )
-    agent = FallenAgent(settings, ollama, ComputerTools(settings))  # type: ignore[arg-type]
+    agent = LolaAgent(settings, ollama, ComputerTools(settings))  # type: ignore[arg-type]
 
     pending = await agent.chat("session-3", "Write a file")
     result = await agent.resolve_approval("session-3", pending["approval"]["id"], approved=False)
@@ -124,7 +124,7 @@ async def test_new_message_is_blocked_while_approval_pending(settings: Settings)
             }
         ]
     )
-    agent = FallenAgent(settings, ollama, ComputerTools(settings))  # type: ignore[arg-type]
+    agent = LolaAgent(settings, ollama, ComputerTools(settings))  # type: ignore[arg-type]
     await agent.chat("session-4", "Run a command")
 
     with pytest.raises(AgentStateError, match="pending action"):

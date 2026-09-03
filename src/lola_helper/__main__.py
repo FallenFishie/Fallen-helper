@@ -1,4 +1,4 @@
-"""Command-line launcher for Fallen Helper."""
+"""Command-line launcher for Lola Helper."""
 
 from __future__ import annotations
 
@@ -15,8 +15,8 @@ from .config import Settings
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="fallen-helper",
-        description="Start the local Fallen AI assistant control panel.",
+        prog="lola-helper",
+        description="Start the local Lola AI assistant control panel.",
     )
     parser.add_argument("--host", help="Listening host (default: 127.0.0.1)")
     parser.add_argument("--port", type=int, help="Listening port (default: 7331)")
@@ -47,7 +47,7 @@ def main() -> None:
     if settings.open_browser:
         threading.Timer(1.0, lambda: webbrowser.open(local_url, new=2)).start()
 
-    print("\n  FALLEN // Local intelligence online")
+    print("\n  LOLA // Local intelligence online")
     print(f"  Control panel: {local_url}")
     print(f"  Ollama:       {settings.ollama_url}")
     print(f"  Model:        {settings.model}")

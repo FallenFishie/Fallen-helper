@@ -1,8 +1,8 @@
-"""Configuration loading for Fallen Helper.
+"""Configuration loading for Lola Helper.
 
 Configuration is intentionally small and JSON-based so the application can be
 installed without a database or a settings service. Environment variables take
-precedence over values in ``~/.fallen-helper/config.json``.
+precedence over values in ``~/.lola-helper/config.json``.
 """
 
 from __future__ import annotations
@@ -84,13 +84,13 @@ class Settings:
     def load(cls) -> Settings:
         home = Path.home().resolve()
         data_dir = (
-            Path(os.environ.get("FALLEN_DATA_DIR", home / ".fallen-helper"))
+            Path(os.environ.get("LOLA_DATA_DIR", home / ".lola-helper"))
             .expanduser()
             .resolve(strict=False)
         )
         config = _read_json(data_dir / "config.json")
 
-        env_roots = os.environ.get("FALLEN_ALLOWED_ROOTS")
+        env_roots = os.environ.get("LOLA_ALLOWED_ROOTS")
         roots = _normalise_roots(
             env_roots if env_roots is not None else config.get("allowed_roots"), home
         )
@@ -104,23 +104,23 @@ class Settings:
                 elif isinstance(command, list) and all(isinstance(part, str) for part in command):
                     aliases[str(name).strip().lower()] = list(command)
 
-        model = os.environ.get("FALLEN_MODEL", str(config.get("model", "qwen3:4b")))
+        model = os.environ.get("LOLA_MODEL", str(config.get("model", "qwen3:4b")))
         ollama_url = os.environ.get(
-            "FALLEN_OLLAMA_URL", str(config.get("ollama_url", "http://127.0.0.1:11434"))
+            "LOLA_OLLAMA_URL", str(config.get("ollama_url", "http://127.0.0.1:11434"))
         ).rstrip("/")
 
         return cls(
             model=model,
             ollama_url=ollama_url,
-            host=os.environ.get("FALLEN_HOST", str(config.get("host", "127.0.0.1"))),
-            port=int(os.environ.get("FALLEN_PORT", config.get("port", 7331))),
+            host=os.environ.get("LOLA_HOST", str(config.get("host", "127.0.0.1"))),
+            port=int(os.environ.get("LOLA_PORT", config.get("port", 7331))),
             open_browser=_as_bool(
-                os.environ.get("FALLEN_OPEN_BROWSER", config.get("open_browser")), True
+                os.environ.get("LOLA_OPEN_BROWSER", config.get("open_browser")), True
             ),
             data_dir=data_dir,
             allowed_roots=roots,
             allow_commands=_as_bool(
-                os.environ.get("FALLEN_ALLOW_COMMANDS", config.get("allow_commands")), True
+                os.environ.get("LOLA_ALLOW_COMMANDS", config.get("allow_commands")), True
             ),
             command_timeout_seconds=max(
                 1,
@@ -128,7 +128,7 @@ class Settings:
                     300,
                     int(
                         os.environ.get(
-                            "FALLEN_COMMAND_TIMEOUT",
+                            "LOLA_COMMAND_TIMEOUT",
                             config.get("command_timeout_seconds", 30),
                         )
                     ),

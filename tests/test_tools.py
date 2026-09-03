@@ -3,19 +3,19 @@ from pathlib import Path
 
 import pytest
 
-from fallen_helper.config import Settings
-from fallen_helper.tools import ComputerTools, ToolError
+from lola_helper.config import Settings
+from lola_helper.tools import ComputerTools, ToolError
 
 
 @pytest.mark.asyncio
 async def test_reads_text_inside_allowed_root(settings: Settings) -> None:
     path = settings.allowed_roots[0] / "hello.txt"
-    path.write_text("hello from Fallen", encoding="utf-8")
+    path.write_text("hello from Lola", encoding="utf-8")
     tools = ComputerTools(settings)
 
     result = await tools.execute("read_text_file", {"path": str(path)})
 
-    assert result.output["content"] == "hello from Fallen"
+    assert result.output["content"] == "hello from Lola"
     assert result.output["truncated"] is False
 
 
@@ -106,8 +106,8 @@ async def test_command_output_is_captured(settings: Settings) -> None:
     tools = ComputerTools(settings)
     result = await tools.execute(
         "run_command",
-        {"command": "printf fallen", "working_directory": str(settings.allowed_roots[0])},
+        {"command": "printf lola", "working_directory": str(settings.allowed_roots[0])},
     )
 
     assert result.output["exit_code"] == 0
-    assert result.output["stdout"] == "fallen"
+    assert result.output["stdout"] == "lola"

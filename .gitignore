@@ -18,7 +18,7 @@ Thumbs.db
 # Local configuration and data
 .env
 config.json
-.fallen-helper/
+.lola-helper/
 
 # Logs
 *.log
