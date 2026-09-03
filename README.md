@@ -1,6 +1,6 @@
-# Fallen Helper
+# Lola Helper
 
-A private, local-first desktop AI helper inspired by cinematic assistants. Fallen uses an [Ollama](https://ollama.com/) model for conversation and tool selection, then performs narrowly scoped actions on your computer.
+A private, local-first desktop AI helper inspired by cinematic assistants. Lola uses an [Ollama](https://ollama.com/) model for conversation and tool selection, then performs narrowly scoped actions on your computer.
 
 It includes a responsive control panel, push-to-talk input, spoken replies, app launching, file search, notes, tasks, system information, and an approval gate for shell commands and file writes.
 
@@ -17,7 +17,7 @@ It includes a responsive control panel, push-to-talk input, spoken replies, app 
 - Write text files **only after approval**
 - Accept voice input and read answers aloud using browser/operating-system speech features
 
-All model traffic goes directly from Fallen's local server to the configured Ollama endpoint. There is no Fallen cloud account or telemetry.
+All model traffic goes directly from Lola's local server to the configured Ollama endpoint. There is no Lola cloud account or telemetry.
 
 ## Quick start
 
@@ -50,7 +50,7 @@ chmod +x scripts/install.sh scripts/start.sh
 ./scripts/start.sh
 ```
 
-The launcher opens `http://127.0.0.1:7331` in your browser. Keep the terminal window running while using Fallen.
+The launcher opens `http://127.0.0.1:7331` in your browser. Keep the terminal window running while using Lola.
 
 ### Manual installation
 
@@ -59,16 +59,16 @@ python -m venv .venv
 # Windows: .venv\Scripts\activate
 # macOS/Linux: source .venv/bin/activate
 python -m pip install -e .
-fallen-helper
+lola-helper
 ```
 
 Useful launcher options:
 
 ```text
-fallen-helper --model qwen3:8b
-fallen-helper --port 7444
-fallen-helper --ollama-url http://127.0.0.1:11434
-fallen-helper --no-browser
+lola-helper --model qwen3:8b
+lola-helper --port 7444
+lola-helper --ollama-url http://127.0.0.1:11434
+lola-helper --no-browser
 ```
 
 ## Example requests
@@ -82,16 +82,16 @@ fallen-helper --no-browser
 - “Run `git status` in my Projects/demo folder.”
 - “Create a text file on my Desktop with this shopping list.”
 
-For the final two examples, Fallen pauses and displays the exact action. Nothing runs until **Approve once** is selected.
+For the final two examples, Lola pauses and displays the exact action. Nothing runs until **Approve once** is selected.
 
 ## Configuration
 
-On first launch Fallen creates its private data directory:
+On first launch Lola creates its private data directory:
 
-- Windows: `%USERPROFILE%\.fallen-helper`
-- macOS/Linux: `~/.fallen-helper`
+- Windows: `%USERPROFILE%\.lola-helper`
+- macOS/Linux: `~/.lola-helper`
 
-Copy [`config.example.json`](config.example.json) to `~/.fallen-helper/config.json` and edit it as needed:
+Copy [`config.example.json`](config.example.json) to `~/.lola-helper/config.json` and edit it as needed:
 
 ```json
 {
@@ -119,20 +119,20 @@ Environment variables override JSON settings:
 
 | Variable | Purpose |
 | --- | --- |
-| `FALLEN_MODEL` | Default Ollama model |
-| `FALLEN_OLLAMA_URL` | Ollama API URL |
-| `FALLEN_HOST` / `FALLEN_PORT` | Local web server address |
-| `FALLEN_DATA_DIR` | Notes, tasks, and config directory |
-| `FALLEN_ALLOWED_ROOTS` | Allowed file roots, separated by the OS path separator |
-| `FALLEN_ALLOW_COMMANDS` | `true` or `false`; removes the command tool when false |
-| `FALLEN_COMMAND_TIMEOUT` | Maximum command runtime in seconds (up to 300) |
-| `FALLEN_OPEN_BROWSER` | Open the control panel automatically |
+| `LOLA_MODEL` | Default Ollama model |
+| `LOLA_OLLAMA_URL` | Ollama API URL |
+| `LOLA_HOST` / `LOLA_PORT` | Local web server address |
+| `LOLA_DATA_DIR` | Notes, tasks, and config directory |
+| `LOLA_ALLOWED_ROOTS` | Allowed file roots, separated by the OS path separator |
+| `LOLA_ALLOW_COMMANDS` | `true` or `false`; removes the command tool when false |
+| `LOLA_COMMAND_TIMEOUT` | Maximum command runtime in seconds (up to 300) |
+| `LOLA_OPEN_BROWSER` | Open the control panel automatically |
 
-After changing configuration, restart Fallen.
+After changing configuration, restart Lola.
 
 ## Safety model
 
-A computer assistant should not silently have unlimited access. Fallen uses several layers:
+A computer assistant should not silently have unlimited access. Lola uses several layers:
 
 1. **Local binding:** the server listens on `127.0.0.1` by default.
 2. **No CORS:** unrelated websites cannot call its action API through a normal browser.
@@ -142,7 +142,7 @@ A computer assistant should not silently have unlimited access. Fallen uses seve
 6. **Hard stops:** a small set of obviously catastrophic disk, shutdown, and recursive root-deletion commands is rejected even if requested.
 7. **Bounded output:** reads, searches, command duration, and returned output are capped.
 
-These controls reduce risk; they are not a security sandbox. An approved shell command runs with your normal user permissions. Read it carefully. Keep `allow_commands` false if you do not need terminal actions, and do not expose the Fallen server directly to a network or the internet.
+These controls reduce risk; they are not a security sandbox. An approved shell command runs with your normal user permissions. Read it carefully. Keep `allow_commands` false if you do not need terminal actions, and do not expose the Lola server directly to a network or the internet.
 
 ## Voice privacy
 
@@ -150,7 +150,7 @@ Spoken replies use the browser/operating system's speech synthesis. Push-to-talk
 
 ## Built-in app aliases
 
-Fallen ships with conservative aliases rather than launching arbitrary executables:
+Lola ships with conservative aliases rather than launching arbitrary executables:
 
 - **Windows:** Calculator, Notepad, Terminal, File Explorer, Task Manager, Settings, Paint
 - **macOS:** Calculator, TextEdit, Terminal, Finder, Activity Monitor, System Settings, Calendar
@@ -169,7 +169,7 @@ ruff check .
 Project layout:
 
 ```text
-src/fallen_helper/
+src/lola_helper/
 ├── agent.py       # Ollama tool loop and approvals
 ├── app.py         # local API and control-panel server
 ├── config.py      # JSON/environment configuration
@@ -181,7 +181,7 @@ src/fallen_helper/
 Run without opening a browser during development:
 
 ```bash
-fallen-helper --no-browser
+lola-helper --no-browser
 ```
 
 ## Troubleshooting
@@ -208,7 +208,7 @@ Use a model that explicitly supports tool/function calling. Small models may cho
 
 ### An application is not known
 
-Add a trusted executable under `app_aliases`, restart Fallen, and ask it to list known applications.
+Add a trusted executable under `app_aliases`, restart Lola, and ask it to list known applications.
 
 ### A path is blocked
 

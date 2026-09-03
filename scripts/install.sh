@@ -27,10 +27,10 @@ fi
 python -m pip install --upgrade pip
 python -m pip install -e .
 
-printf '\nFallen Helper is installed.\n'
+printf '\nLola Helper is installed.\n'
 if ! command -v ollama >/dev/null 2>&1; then
   echo "Ollama was not found. Install it from https://ollama.com/download"
 else
   echo "Ollama detected. If needed, run: ollama pull qwen3:4b"
 fi
-echo "Start Fallen with: ./scripts/start.sh"
+echo "Start Lola with: ./scripts/start.sh"

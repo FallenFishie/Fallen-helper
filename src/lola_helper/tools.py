@@ -204,7 +204,7 @@ class ComputerTools:
             return f"Allow unknown action {name}?"
         if spec.confirmation:
             return spec.confirmation(arguments)
-        return f"Allow Fallen to run {name}?"
+        return f"Allow Lola to run {name}?"
 
     def public_arguments(self, name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """Return approval-dialog arguments without deceptive control characters."""
@@ -405,7 +405,7 @@ class ComputerTools:
         self._add_spec(
             ToolSpec(
                 "create_note",
-                "Save a note in Fallen's private notes folder.",
+                "Save a note in Lola's private notes folder.",
                 self._object_schema(
                     {"title": {"type": "string"}, "content": {"type": "string"}},
                     ["title", "content"],
@@ -416,7 +416,7 @@ class ComputerTools:
         self._add_spec(
             ToolSpec(
                 "list_notes",
-                "List notes previously saved by Fallen, including the id used by read_note.",
+                "List notes previously saved by Lola, including the id used by read_note.",
                 self._object_schema({}),
                 self._list_notes,
             )
@@ -424,7 +424,7 @@ class ComputerTools:
         self._add_spec(
             ToolSpec(
                 "read_note",
-                "Read one of Fallen's notes using an id returned by list_notes.",
+                "Read one of Lola's notes using an id returned by list_notes.",
                 self._object_schema({"note_id": {"type": "string"}}, ["note_id"]),
                 self._read_note,
             )
@@ -432,7 +432,7 @@ class ComputerTools:
         self._add_spec(
             ToolSpec(
                 "add_task",
-                "Add an item to the user's local Fallen task list.",
+                "Add an item to the user's local Lola task list.",
                 self._object_schema(
                     {
                         "title": {"type": "string"},
@@ -449,7 +449,7 @@ class ComputerTools:
         self._add_spec(
             ToolSpec(
                 "list_tasks",
-                "List tasks from the user's local Fallen task list.",
+                "List tasks from the user's local Lola task list.",
                 self._object_schema({"include_completed": {"type": "boolean", "default": False}}),
                 self._list_tasks,
             )
@@ -457,7 +457,7 @@ class ComputerTools:
         self._add_spec(
             ToolSpec(
                 "complete_task",
-                "Mark a Fallen task complete using the id returned by list_tasks.",
+                "Mark a Lola task complete using the id returned by list_tasks.",
                 self._object_schema({"task_id": {"type": "string"}}, ["task_id"]),
                 self._complete_task,
             )

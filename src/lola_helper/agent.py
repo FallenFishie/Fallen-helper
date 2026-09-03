@@ -1,4 +1,4 @@
-"""Tool-calling conversation loop for the Fallen assistant."""
+"""Tool-calling conversation loop for the Lola assistant."""
 
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ class Conversation:
     touched_at: float = field(default_factory=time.monotonic)
 
 
-class FallenAgent:
+class LolaAgent:
     """Drive an Ollama model and pause before consequential tools."""
 
     def __init__(
@@ -70,7 +70,7 @@ class FallenAgent:
         now = datetime.now().astimezone().strftime("%A, %B %d, %Y %H:%M %Z")
         return "\n".join(
             [
-                "You are FALLEN, a calm, capable personal computer assistant inspired by",
+                "You are LOLA, a calm, capable personal computer assistant inspired by",
                 "cinematic AI helpers. You run locally through Ollama. Be warm, concise, and",
                 "practical; never pretend to be fictional or claim capabilities you do not have.",
                 "",
